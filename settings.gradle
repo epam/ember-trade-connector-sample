@@ -1,0 +1,9 @@
+
+include ':common',
+        ':devenv',
+        ':gemini',
+        ':fix:core',
+        ':fix:deltix'
+
+
+rootProject.name = "trade-connector-sample"

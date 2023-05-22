@@ -1,0 +1,28 @@
+#################
+## Auto-generated source files
+#################
+generated*/
+
+#################
+## Make sure we ignore binaries
+#################
+# *.jar
+*.lib
+*.dll
+*.so
+*.o
+*.obj
+
+#################
+## Gradle
+#################
+.gradle/
+user.gradle
+
+#################
+## IDEA
+#################
+.idea/
+out/
+build/
+*.iml

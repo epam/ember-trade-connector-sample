@@ -1,0 +1,7 @@
+dependencies {
+    api project(':common')
+    api 'deltix:deltix-efix-core'
+    api 'deltix:deltix-efix-endpoint'
+}
+
+archivesBaseName = 'deltix-fix-core'

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <appender name="console" factory="com.epam.deltix.gflog.core.appender.ConsoleAppenderFactory">
+        <layout template="%d{yyyy-MM-dd HH:mm:ss.SSS} %p [%t]: %m%n" zoneId="UTC"/>
+    </appender>
+
+    <appender name="file" factory="com.epam.deltix.gflog.core.appender.DailyRollingFileAppenderFactory"
+              file="${ember.work}/logs/${app.name}.log">
+        <layout template="%d{yyyy-MM-dd HH:mm:ss.SSS} %p [%t]: %m%n" zoneId="UTC"/>
+    </appender>
+
+    <appender name="safeAppender" factory="com.epam.deltix.gflog.core.appender.SafeAppenderFactory">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </appender>
+
+
+    <logger name="deltix.connector.crypto.gemini.GeminiTradeConnector" level="DEBUG">
+        <appender-ref ref="safeAppender"/>
+    </logger>
+
+    <logger name="deltix.efix.endpoint.session.Session" level="DEBUG">
+        <appender-ref ref="safeAppender"/>
+    </logger>
+
+    <logger name="deltix.connector.common.smd.ContractProcessor" level="INFO">
+        <appender-ref ref="safeAppender"/>
+    </logger>
+
+    <logger>
+        <appender-ref ref="safeAppender"/>
+    </logger>
+
+    <service overflowStrategy="DISCARD"/>
+
+</config>

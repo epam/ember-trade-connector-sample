@@ -1,0 +1,77 @@
+plugins {
+    id 'base'
+    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
+    id "de.undercouch.download" version "5.1.0" apply false
+}
+
+ext.archivesDirectory = rootProject.file('build/archives')
+
+allprojects {
+    apply from: "$rootDir/gradle/deltix.gradle"
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        //mavenDeltixProxy("epm-rtc-public-java") // TODO: restore after promoting all versions
+        mavenDeltixProxy("DevMain")
+    }
+
+    if (project.subprojects.isEmpty()) {
+        apply plugin: 'java-library'
+        apply plugin: 'io.spring.dependency-management'
+        apply from: "$rootDir/gradle/docker-support.gradle"
+
+        java {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+
+        dependencyManagement {
+            imports {
+                mavenBom 'deltix:deltix-ember-bom:' + emberVersion
+            }
+
+            dependencies {
+                dependency ('com.github.spotbugs:spotbugs-annotations:4.7.3') {
+                    exclude 'org.junit:junit-bom'
+                }
+
+                // TEST STUFF
+                dependency 'org.mockito:mockito-core:2.23.0'
+
+                dependencySet (group: 'org.junit.jupiter', version: '5.3.1') {
+                    entry 'junit-jupiter-api'
+                    entry 'junit-jupiter-engine'
+                }
+            }
+        }
+
+        dependencies {
+            implementation 'deltix:deltix-anvil-lang'
+            implementation 'deltix:deltix-ember-api'
+            implementation 'deltix:deltix-ember-connector-api'
+
+            implementation 'com.github.spotbugs:spotbugs-annotations'
+
+            // We need this if we want to Run/Debug connector from this project
+            runtimeOnly  'deltix:deltix-ember-app'
+
+            testImplementation 'org.mockito:mockito-core'
+            testImplementation 'org.junit.jupiter:junit-jupiter-api'
+            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        }
+
+        test {
+            useJUnitPlatform {
+                excludeTags 'real-exchange'
+            }
+
+            jvmArgs '-Dgflog.sync=true', '-Dgflog.console.appender.wrap=true' // sync logging to not mix up messages from different tests
+        }
+	}
+}
+
+task gatherJars(type: Copy) {
+    from subprojects.collect { it.tasks.withType(Jar) }
+    into archivesDirectory
+}

@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':fix:core')
+}
+
+archivesBaseName = 'deltix-fix-deltix'

@@ -1,0 +1,99 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'de.undercouch.download'
+
+def DELTIX_PROXY_REPOSITIRY = findProp('NEXUS_PROXY_REPOSITIRY', 'https://nexus.deltixhub.com/repository/')
+
+File devenvRootDir = new File(sourceSets.main.resources.srcDirs[0], 'devenv')
+File connectorsArchiveDir = new File(rootProject.buildDir, 'archives')
+File devenvOutput = file(findProperty('devenvDir') ?: rootProject.file('build/devenv'))
+File connectorsLibDir = new File(devenvOutput, 'ember/lib/custom')
+
+// disable jar creation
+jar {
+    setEnabled(false)
+}
+
+// load properties from devenv.properties
+def devenvProperties = loadDevEnvProperties(devenvRootDir, devenvOutput)
+
+// region Dev Env Tasks
+
+task devenvClean(type: Delete) {
+    setDelete devenvOutput
+
+    doLast {
+        println "Delete dev env: $devenvOutput"
+    }
+}
+
+task devenvCopy(type: Copy, dependsOn: devenvClean) {
+    from ("$devenvRootDir/homes") {
+        filter (ReplaceTokens, tokens: devenvProperties)
+    }
+    into devenvOutput
+}
+
+task downloadEmberZip(type: Download, dependsOn: devenvCopy) {
+    src "${DELTIX_PROXY_REPOSITIRY}epm-rtc-public/QuantServer/Trade/Ember/${emberVersion}/deltix-ember-${emberVersion}.zip"
+    dest new File(buildDir, "deltix-ember-${emberVersion}.zip")
+    username findProp('NEXUS_USER', null) as String
+    password findProp('NEXUS_PASS', null) as String
+}
+
+task unzipEmberZip(type: Copy, dependsOn: downloadEmberZip) {
+    from zipTree(downloadEmberZip.dest)
+    into new File(devenvOutput, 'ember')
+}
+
+task devenvPrepare(type: Copy, dependsOn: unzipEmberZip) {
+    from zipTree("$devenvRootDir/archives/securities.zip")
+    into new File(devenvOutput, '/qshome/tickdb')
+}
+
+
+task devenvCleanLibCustom(type: Delete) {
+    setDelete connectorsLibDir
+
+    doLast {
+        println "Delete custom libs: $connectorsLibDir"
+    }
+}
+
+task updateConnectors(type: Copy, dependsOn: devenvCleanLibCustom) {
+    from "$devenvRootDir/devenv.properties"
+    from connectorsArchiveDir
+    into connectorsLibDir
+}
+
+// endregion
+
+task buildDevEnv {
+    dependsOn devenvPrepare, updateConnectors
+}
+
+// region Utilities
+
+// resolves property value by name
+String findProp(String property, String defaultValue) {
+    return findProperty(property) ?: System.getenv(property) ?: defaultValue
+}
+
+// load properties from devenv.properties
+def loadDevEnvProperties(def devenvResDir, def devenvOutputDir) {
+    def props = new Properties()
+    file("$devenvResDir/devenv.properties").withInputStream { props.load(it) }
+
+    props.setProperty('devenvQsHome', new File(devenvOutputDir, 'qshome').absolutePath)
+    props.setProperty('devenvOutput', new File(devenvOutputDir, '').absolutePath)
+
+    // copy/override some project properties to devenv
+    project.asDynamicObject.properties.each {
+        if (it != null && (it.key.equals("serialNumber") || it.key.startsWith('devenv'))) {
+            props.setProperty(it.key.toString(), it.value.toString())
+        }
+    }
+    return props
+}
+
+// endregion
