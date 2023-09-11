@@ -11,6 +11,7 @@ import deltix.anvil.message.ShutdownRequest;
 import deltix.anvil.service.ServiceWorkerAware;
 import deltix.anvil.util.ByteSequence;
 import deltix.anvil.util.Reusable;
+import deltix.anvil.util.annotation.Timestamp;
 import deltix.anvil.util.buffer.Buffer;
 import deltix.anvil.util.counter.Counter;
 import deltix.connector.common.Messages;
@@ -42,6 +43,8 @@ import deltix.ember.service.connector.TradeConnectorContext;
 import deltix.ember.service.connector.TradeConnectorStatusIndicator;
 import edu.umd.cs.findbugs.annotations.DefaultAnnotationForParameters;
 import edu.umd.cs.findbugs.annotations.NonNull;
+
+import java.util.concurrent.TimeUnit;
 
 @DefaultAnnotationForParameters(NonNull.class)
 @SuppressWarnings("WeakerAccess")
@@ -442,7 +445,7 @@ public abstract class FixTradeConnector<
 
         event.setSourceId(id);
         event.setReason(message.getText());
-        event.setTimestamp(clock.time());
+        event.setTimestampNs(clock.timeNs());
     }
 
     protected void makeOrderCancelRejectEvent(Header header, FixReject message, FixCancelOrderRequest refMessage, MutableOrderCancelRejectEvent event) {
@@ -452,7 +455,7 @@ public abstract class FixTradeConnector<
         event.setSourceId(id);
         event.setExternalOrderId(refMessage.getExternalOrderId());
         event.setOrderStatus(null); // we do not know order status here
-        event.setTimestamp(clock.time());
+        event.setTimestampNs(clock.timeNs());
         event.setSequenceNumber(header.msgSeqNum());
 
         event.setAttributes(null);
@@ -465,7 +468,7 @@ public abstract class FixTradeConnector<
         event.setSourceId(id);
         event.setExternalOrderId(refMessage.getExternalOrderId());
         event.setOrderStatus(null); // we do not know order status for entire replacement chain
-        event.setTimestamp(clock.time());
+        event.setTimestampNs(clock.timeNs());
         event.setSequenceNumber(header.msgSeqNum());
 
         event.setAttributes(null);
@@ -676,7 +679,7 @@ public abstract class FixTradeConnector<
         event.setEventId(message.getExecutionId());
         event.setExternalOrderId(message.getExternalOrderId());
         event.setOrderStatus(FixUtil.getOrderStatus(message.getOrderStatus()));
-        event.setTimestamp(clock.time());
+        event.setTimestampNs(clock.timeNs());
         event.setSequenceNumber(header.msgSeqNum());
 
         event.setSymbol(contract.getSymbol());
@@ -760,7 +763,7 @@ public abstract class FixTradeConnector<
         event.setSourceId(id);
         event.setExternalOrderId(message.getExternalOrderId());
         event.setOrderStatus(null);
-        event.setTimestamp(clock.time());
+        event.setTimestampNs(clock.timeNs());
         event.setSequenceNumber(header.msgSeqNum());
 
         event.setAttributes(null);
@@ -800,7 +803,7 @@ public abstract class FixTradeConnector<
             LOG.warn("New order request was rejected due to %s").with(e);
 
             MutableOrderRejectEvent event = messages.orderRejectEvent();
-            Messages.makeOrderRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderRejectEvent(event);
         }
     }
@@ -861,7 +864,7 @@ public abstract class FixTradeConnector<
             LOG.warn("Cancel order request was rejected due to %s").with(e);
 
             MutableOrderCancelRejectEvent event = messages.orderCancelRejectEvent();
-            Messages.makeOrderCancelRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderCancelRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderCancelRejectEvent(event);
         }
     }
@@ -901,7 +904,7 @@ public abstract class FixTradeConnector<
             LOG.warn("Replace order request was rejected due to %s").with(e);
 
             MutableOrderReplaceRejectEvent event = messages.orderReplaceRejectEvent();
-            Messages.makeOrderReplaceRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderReplaceRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderReplaceRejectEvent(event);
         }
     }
@@ -1094,7 +1097,7 @@ public abstract class FixTradeConnector<
             final MutableSessionStatusEvent event = messages.sessionStatusEvent();
             event.setSourceId(id);
             event.setStatus(status);
-            event.setTimestamp(clock.time());
+            event.setTimestampNs(clock.timeNs());
             ember.onSessionStatusEvent(event);
         }
     }
@@ -1304,7 +1307,7 @@ public abstract class FixTradeConnector<
         }
 
         @Override
-        public void onMessage(int seqNum, long time, ByteSequence msgType, Buffer body, int offset, int length) {
+        public void onMessage(int seqNum, @Timestamp(TimeUnit.NANOSECONDS) long timeNs, ByteSequence msgType, Buffer body, int offset, int length) {
             onMessageReject(header, message, msgType, body, offset, length);
         }
 

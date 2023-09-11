@@ -14,19 +14,13 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
 - Download and install [Eclipse Adoptium JDK 11](https://adoptium.net/temurin/releases?version=11)
 - Download and install [QuantServer 5.6 (TimeBase and Aggregator)](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.23.jar)
 
-Also please make sure that you define environment variables `NEXUS_USER` and `NEXUS_PASS` to Deltix repository credentials provided to you.
-
 
 ## Development Environment
 
 ### How to create dev environment:
 
-- Create (if not exist) `%USERPROFILE%\.gradle\gradle.properties` and define properties below:
+- Create (if not exist) `%USERPROFILE%\.gradle\gradle.properties` and define properties like below:
   ``` config
-  NEXUS_PROXY_REPOSITIRY=https://nexus.deltixhub.com/repository/
-  NEXUS_USER=<username>
-  NEXUS_PASS=<password>
-  
   # TimeBase serial number
   serialNumber=XXXX-17A45F8CBF0-XXXX
   
@@ -46,8 +40,10 @@ Also please make sure that you define environment variables `NEXUS_USER` and `NE
 
 ### Configuration
 
-- Ember configuration: see `<devenvDir>/ember-home/ember.conf`
-- Logging configuration: see `<devenvDir>/ember-home/gflog.xml`
+- Ember configuration: see `<devenvDir>/ember-home/ember.conf` \
+  See more about [Ember Configuration](https://ember.deltixlab.com/docs/config/config_reference/)
+- Logging configuration: see `<devenvDir>/ember-home/gflog.xml` \
+  See more about [Garbage Free Log](https://github.com/epam/gflog#garbage-free-log)
 
 ### Testing
 
@@ -57,6 +53,7 @@ Also please make sure that you define environment variables `NEXUS_USER` and `NE
 - Launch _Ember_ via `start-ember.bat`
 - Launch _Ember Monitor_ via `start-monitor.bat`
 - Open browser and follow link: `http://localhost:8988`
+
 
 ## Build
 
@@ -90,7 +87,7 @@ See [Deltix FIX API](https://ember.deltixlab.com/docs/api/fix/fix_api_roe/).
 
 ### Deploy
 
-To deploy your connector to actual server copy JAR files below under `lib/custom/` directory of your ES installation.
+To deploy your connector to _actual_ server copy JAR files below under `lib/custom/` directory of your Ember installation.
 - `/common/build/libs/common-2.0.0.jar`
 - `/fix/core/build/libs/deltix-fix-core-2.0.0.jar`
 - `/fix/deltix/build/libs/deltix-fix-deltix-2.0.0.jar`

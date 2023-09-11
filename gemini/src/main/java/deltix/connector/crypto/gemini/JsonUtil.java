@@ -10,7 +10,7 @@ import java.io.UncheckedIOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-public class JsonUtil {
+public final class JsonUtil {
 
     private static final ThreadLocal<DecimalFormat> DECIMAL_FORMAT = ThreadLocal.withInitial(() -> {
         final DecimalFormat decimalFormat = new DecimalFormat();

@@ -15,7 +15,7 @@ public class GeminiTradeConnectorFactory extends GeminiConnectorSettings impleme
         return new GeminiTradeConnector(this, context, new ContractMetadata<>(new CommonContractProcessor(attributeKey)));
     }
 
-    private void checkSettings (GeminiConnectorSettings settings) {
+    private void checkSettings(GeminiConnectorSettings settings) {
         if (CharSequenceUtil.isEmptyOrNull(settings.getRestUrl()))
             throw new IllegalArgumentException("Configuration is missing REST URL");
         if (CharSequenceUtil.isEmptyOrNull(settings.getWebsocketUrl()))

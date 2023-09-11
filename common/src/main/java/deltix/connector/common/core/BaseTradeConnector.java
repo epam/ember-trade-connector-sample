@@ -174,7 +174,7 @@ public abstract class BaseTradeConnector<Contract extends deltix.connector.commo
 
         if (isLeader()) {
             MutableOrderRejectEvent event = messages.orderRejectEvent();
-            Messages.makeOrderRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderRejectEvent(event);
         }
     }
@@ -197,7 +197,7 @@ public abstract class BaseTradeConnector<Contract extends deltix.connector.commo
         discardEvent.setOrderStatus(OrderStatus.CANCELED);
         discardEvent.setOrderId(orderId);
         discardEvent.setExternalOrderId(request.getExternalOrderId());
-        discardEvent.setTimestamp(clock.time());
+        discardEvent.setTimestampNs(clock.timeNs());
         discardEvent.setSourceId(request.getDestinationId());
         discardEvent.setDestinationId(sourceId);
         discardEvent.setReason("Discard order due to Cancel-On-Disconnect");
@@ -233,7 +233,7 @@ public abstract class BaseTradeConnector<Contract extends deltix.connector.commo
 
         if (isLeader()) {
             MutableOrderCancelRejectEvent event = messages.orderCancelRejectEvent();
-            Messages.makeOrderCancelRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderCancelRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderCancelRejectEvent(event);
         }
     }
@@ -262,7 +262,7 @@ public abstract class BaseTradeConnector<Contract extends deltix.connector.commo
 
         if (isLeader()) {
             MutableOrderReplaceRejectEvent event = messages.orderReplaceRejectEvent();
-            Messages.makeOrderReplaceRejectEvent(clock.time(), e.getMessage(), request, event);
+            Messages.makeOrderReplaceRejectEvent(clock.timeNs(), e.getMessage(), request, event);
             fireOrderReplaceRejectEvent(event);
         }
     }
@@ -365,7 +365,7 @@ public abstract class BaseTradeConnector<Contract extends deltix.connector.commo
             final MutableSessionStatusEvent event = messages.sessionStatusEvent();
             event.setSourceId(id);
             event.setStatus(status);
-            event.setTimestamp(clock.time());
+            event.setTimestampNs(clock.timeNs());
             ember.onSessionStatusEvent(event);
         }
     }

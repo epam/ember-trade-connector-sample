@@ -14,18 +14,18 @@ import deltix.ember.message.trade.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class FixUtil {
+public final class FixUtil {
 
     private static final int DAY_MS = (int) TimeUnit.DAYS.toMillis(1);
     private static final ByteSequence SECURITY_TYPE_BOND = new AsciiString("BOND");
 
-    public static void addNullableCharSequence(final int tag, final CharSequence sequence, final MessageBuilder builder) {
+    public static void addNullableCharSequence(int tag, CharSequence sequence, MessageBuilder builder) {
         if (sequence != null) {
             builder.addString(tag, sequence);
         }
     }
 
-    public static CharSequence getSecurityType(final InstrumentType securityType) {
+    public static CharSequence getSecurityType(InstrumentType securityType) {
         switch (securityType) {
             case EQUITY:
             case ETF:
@@ -51,7 +51,7 @@ public class FixUtil {
         throw new IllegalArgumentException("Unsupported security type " + securityType);
     }
 
-    public static OrderType getOrderType(final byte orderType) {
+    public static OrderType getOrderType(byte orderType) {
         switch (orderType) {
             case OrdType.MARKET:
                 return OrderType.MARKET;
@@ -73,7 +73,7 @@ public class FixUtil {
         return null;
     }
 
-    public static byte getOrderType(final OrderType orderType) {
+    public static byte getOrderType(OrderType orderType) {
         switch (orderType) {
             case MARKET:
                 return OrdType.MARKET;
@@ -91,7 +91,7 @@ public class FixUtil {
         throw new IllegalArgumentException("Unsupported order type: " + orderType);
     }
 
-    public static TimeInForce getTimeInForce(final byte timeInForce) {
+    public static TimeInForce getTimeInForce(byte timeInForce) {
         switch (timeInForce) {
             case deltix.efix.message.field.TimeInForce.DAY:
                 return TimeInForce.DAY;
@@ -125,7 +125,7 @@ public class FixUtil {
         return null;
     }
 
-    public static byte getTimeInForce(final TimeInForce timeInForce) {
+    public static byte getTimeInForce(TimeInForce timeInForce) {
         switch (timeInForce) {
             case DAY:
                 return deltix.efix.message.field.TimeInForce.DAY;
@@ -155,7 +155,7 @@ public class FixUtil {
         throw new IllegalArgumentException("Unsupported time in force: " + timeInForce);
     }
 
-    public static OrderStatus getOrderStatus(final byte status) {
+    public static OrderStatus getOrderStatus(byte status) {
         switch (status) {
             case OrdStatus.PENDING_NEW:
                 return OrderStatus.PENDING_NEW;
@@ -199,7 +199,7 @@ public class FixUtil {
         return null;
     }
 
-    public static Side getSide(final byte side) {
+    public static Side getSide(byte side) {
         switch (side) {
             case deltix.efix.message.field.Side.BUY:
                 return Side.BUY;
@@ -218,7 +218,7 @@ public class FixUtil {
         return null;
     }
 
-    public static byte getSide(final Side side) {
+    public static byte getSide(Side side) {
         switch (side) {
             case BUY:
                 return deltix.efix.message.field.Side.BUY;
@@ -237,7 +237,7 @@ public class FixUtil {
     }
 
     @Timestamp
-    public static long getExpireTime(final @Timestamp long expireTime, final @Timestamp long expireDate) {
+    public static long getExpireTime(@Timestamp long expireTime, @Timestamp long expireDate) {
         if (expireTime != TypeConstants.TIMESTAMP_NULL) {
             return expireTime;
         }
@@ -250,7 +250,7 @@ public class FixUtil {
     }
 
 
-    public static MultiLegReportingType getMultiLegReportingType(final byte multiLegReportingType) {
+    public static MultiLegReportingType getMultiLegReportingType(byte multiLegReportingType) {
         switch (multiLegReportingType) {
             case deltix.efix.message.field.MultiLegReportingType.SINGLE_SECURITY:
                 return MultiLegReportingType.SINGLE_SECURITY;

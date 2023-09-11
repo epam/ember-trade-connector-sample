@@ -227,7 +227,7 @@ public class GeminiTradeConnector extends BaseTradeConnector<Contract> {
         emberEvent.setSourceId(id); // event source is connector itself
         emberEvent.setDestinationId(destinationId); // event destination is order request source
         emberEvent.setOrderId(orderId);
-        emberEvent.setTimestamp(clock.time());
+        emberEvent.setTimestampNs(clock.timeNs());
         emberEvent.setReason(reason);
 
         fireOrderRejectEvent(emberEvent);
@@ -267,7 +267,7 @@ public class GeminiTradeConnector extends BaseTradeConnector<Contract> {
         emberEvent.setSourceId(id); // event source is connector itself
         emberEvent.setDestinationId(destinationId); // event destination is order request source
         emberEvent.setOrderId(orderId);
-        emberEvent.setTimestamp(clock.time());
+        emberEvent.setTimestampNs(clock.timeNs());
         emberEvent.setReason(reason);
 
         fireOrderCancelRejectEvent(emberEvent);
@@ -280,7 +280,7 @@ public class GeminiTradeConnector extends BaseTradeConnector<Contract> {
     @Override
     public void onReplaceOrderRequest(OrderReplaceRequest request) {
         final MutableOrderReplaceRejectEvent event = messages.orderReplaceRejectEvent();
-        Messages.makeOrderReplaceRejectEvent(clock.time(), "Cancel/Replace is not supported", request, event);
+        Messages.makeOrderReplaceRejectEvent(clock.timeNs(), "Cancel/Replace is not supported", request, event);
         fireOrderReplaceRejectEvent(event);
     }
 
@@ -406,7 +406,7 @@ public class GeminiTradeConnector extends BaseTradeConnector<Contract> {
         emberEvent.setOrderId(orderId);
         emberEvent.setExternalOrderId(event.getOrderId());
 
-        emberEvent.setTimestamp(clock.time());
+        emberEvent.setTimestampNs(clock.timeNs());
         emberEvent.setOriginalTimestamp(event.getTimestamp());
 
         emberEvent.setSymbol(contract.getSymbol());

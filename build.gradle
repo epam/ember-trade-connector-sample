@@ -12,8 +12,7 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-        //mavenDeltixProxy("epm-rtc-public-java") // TODO: restore after promoting all versions
-        mavenDeltixProxy("DevMain")
+        mavenDeltixProxy("epm-rtc-public-java")
     }
 
     if (project.subprojects.isEmpty()) {
@@ -71,7 +70,7 @@ allprojects {
 	}
 }
 
-task gatherJars(type: Copy) {
+tasks.register('gatherJars', Copy) {
     from subprojects.collect { it.tasks.withType(Jar) }
     into archivesDirectory
 }

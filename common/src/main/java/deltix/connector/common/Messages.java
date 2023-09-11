@@ -2,7 +2,10 @@ package deltix.connector.common;
 
 import deltix.anvil.util.Reusable;
 import deltix.anvil.util.TypeConstants;
+import deltix.anvil.util.annotation.Timestamp;
 import deltix.ember.message.trade.*;
+
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class Messages {
@@ -101,7 +104,7 @@ public class Messages {
     }
 
 
-    public static void makeOrderRejectEvent(final long timestamp, final CharSequence reason, final OrderNewRequest request, final MutableOrderRejectEvent event) {
+    public static void makeOrderRejectEvent(@Timestamp(TimeUnit.NANOSECONDS) long timestampNs, CharSequence reason, OrderNewRequest request, MutableOrderRejectEvent event) {
         event.setReason(reason);
         event.setAveragePrice(TypeConstants.DECIMAL64_NULL);
         event.setCumulativeQuantity(TypeConstants.DECIMAL64_NULL);
@@ -120,7 +123,7 @@ public class Messages {
         event.setEventId(null);
         event.setExchangeId(request.getExchangeId());
         event.setSymbol(request.getSymbol());
-        event.setTimestamp(timestamp);
+        event.setTimestampNs(timestampNs);
         event.setOrderStatus(OrderStatus.REJECTED);
         event.setExternalOrderId(null);
         event.setOrderId(request.getOrderId());
@@ -130,10 +133,10 @@ public class Messages {
         event.setAttributes(request.getAttributes());
     }
 
-    public static void makeOrderReplaceRejectEvent(final long timestamp, final CharSequence reason, final OrderReplaceRequest request, final MutableOrderReplaceRejectEvent event) {
+    public static void makeOrderReplaceRejectEvent(@Timestamp(TimeUnit.NANOSECONDS) long timestampNs, CharSequence reason, OrderReplaceRequest request, MutableOrderReplaceRejectEvent event) {
         event.setOriginalOrderId(request.getOriginalOrderId());
         event.setReason(reason);
-        event.setTimestamp(timestamp);
+        event.setTimestampNs(timestampNs);
         event.setExternalOrderId(request.getExternalOrderId());
         event.setOrderId(request.getOrderId());
         event.setDestinationId(request.getSourceId());
@@ -142,10 +145,10 @@ public class Messages {
         event.setAttributes(request.getAttributes());
     }
 
-    public static void makeOrderCancelRejectEvent(final long timestamp, final CharSequence reason, final OrderCancelRequest request, final MutableOrderCancelRejectEvent event) {
+    public static void makeOrderCancelRejectEvent(@Timestamp(TimeUnit.NANOSECONDS) long timestampNs, CharSequence reason, OrderCancelRequest request, MutableOrderCancelRejectEvent event) {
         event.setReason(reason);
         event.setRequestId(request.getRequestId());
-        event.setTimestamp(timestamp);
+        event.setTimestampNs(timestampNs);
         event.setExternalOrderId(request.getExternalOrderId());
         event.setOrderId(request.getOrderId());
         event.setDestinationId(request.getSourceId());
