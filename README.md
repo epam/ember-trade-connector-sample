@@ -11,7 +11,7 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
-- Download and install [Eclipse Adoptium JDK 11](https://adoptium.net/temurin/releases?version=11)
+- Download and install [Eclipse Temurin JDK 11](https://adoptium.net/temurin/releases?version=11)
 - Download and install [QuantServer 5.6 (TimeBase and Aggregator)](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.23.jar)
 
 
@@ -20,7 +20,11 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
 ### How to create dev environment:
 
 - Create (if not exist) `%USERPROFILE%\.gradle\gradle.properties` and define properties like below:
-  ``` config
+  ```properties
+  # Deltix Nexus repository credentials
+  NEXUS_USER=username
+  NEXUS_PASS=password
+  
   # TimeBase serial number
   serialNumber=XXXX-17A45F8CBF0-XXXX
   
@@ -31,10 +35,10 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   devenvDeltixHome=C:/Deltix/QuantServer
   
   # path to Java 11 JDK
-  devenvJavaHome=C:/Program Files/Eclipse Adoptium/jdk-11.0.15.10-hotspot
+  devenvJavaHome=C:/Program Files/Eclipse Temurin/jdk-11.0.15.10-hotspot
   ```
 - Execute Gradle task to create dev env:
-  ``` shell
+  ```shell
   gradlew clean build gatherJars buildDevEnv
   ```
 
@@ -58,7 +62,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
 ## Build
 
 To build all samples and update connectors in dev env - execute the command below:
-```
+```shell
 gradlew clean build updateConnectors
 ```
 
