@@ -53,7 +53,7 @@ allprojects {
             implementation 'com.github.spotbugs:spotbugs-annotations'
 
             // We need this if we want to Run/Debug connector from this project
-            runtimeOnly  'deltix:deltix-ember-app'
+            runtimeOnly  'deltix:deltix-ember-app:' + emberVersion
 
             testImplementation 'org.mockito:mockito-core'
             testImplementation 'org.junit.jupiter:junit-jupiter-api'
