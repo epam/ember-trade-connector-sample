@@ -117,6 +117,17 @@ To deploy your connector to actual server copy JAR files below under `lib/custom
 
 The last step is to define your connector in server's `ember.conf` (see Dev Env).  
 
+## gRPC Syneroex Trade Connector
+
+Syneroex connector sample demonstrates how build trade connector against gRPC. \
+
+### Sources
+
+- Common code for gRPC trade connector:  
+  `/grpc/syneroex/src/main/java/deltix/fix/*`
+
+
+The last step is to define your connector in server's `ember.conf` (see Dev Env).
 
 ----
 

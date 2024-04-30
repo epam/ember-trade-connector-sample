@@ -1,0 +1,170 @@
+syntax = "proto3";
+package syneroex;
+
+option java_multiple_files = true;
+option java_package = "com.syneroex";
+
+enum SyneroexSide {
+   BUY = 0;
+   SELL = 2;
+}
+
+enum SyneroexOrderType {
+   LIMIT = 0;
+   MARKET = 1;
+}
+
+enum SyneroexTimeInForce {
+   GTC = 0;
+   FOK = 1;
+}
+
+enum SyneroexOrderState {
+    ACKNOWLEDGED = 0;
+    OPEN = 1;
+    PARTIALLY_FILLED = 2;
+    COMPLETELY_FILLED = 3;
+    REJECTED = 4;
+    CANCELLED = 5;
+}
+
+enum ExecType {
+   NEW_EVENT = 0;
+   CANCELED_EVENT = 1;
+   REPLACED_EVENT = 2;
+   REJECTED_EVENT = 3;
+   TRADE_EVENT = 4;
+}
+
+message DecimalValue {
+   sint64 mantissa = 1;
+   sint32 exponent = 2;
+}
+
+
+
+message AuthenticationRequest {
+   string user = 1;
+   string password = 2;
+}
+
+message AuthenticationResponse {
+   bool success = 3;
+   string reason = 4;
+}
+
+
+message CreateOrdersRequest {
+   string symbol = 1;
+   string client_order_id = 2;
+   SyneroexSide side = 3;
+   SyneroexOrderType orderType = 4;
+   SyneroexTimeInForce timeInForce = 5;
+   DecimalValue quantity = 6;
+   DecimalValue price = 7;
+   bool postOnly = 8;
+}
+
+message CreateOrdersResponse {
+   string order_id = 1;
+   string client_order_id = 2;
+   bool success = 3;
+   string reason = 4;
+}
+
+
+message CancelOrdersRequest {
+   string order_id = 1;
+   string client_order_id = 2;
+}
+
+message CancelOrdersResponse {
+   string order_id = 1;
+   string client_order_id = 2;
+   bool success = 3;
+   string reason = 4;
+}
+
+
+message ReplaceOrdersRequest {
+   string symbol = 1;
+   string order_id = 2;
+   string client_order_id = 3;
+   DecimalValue quantity = 4;
+   DecimalValue price = 5;
+}
+
+message ReplaceOrdersResponse {
+   string order_id = 1;
+   string client_order_id = 2;
+   bool success = 3;
+   string reason = 4;
+}
+
+message OrderQueryRequest {
+   string order_id = 1;
+   string client_order_id = 2;
+}
+
+message OrderQueryResponse {
+   string order_id = 1;
+   string client_order_id = 2;
+
+   DecimalValue cumQuantity = 4;
+   DecimalValue avgPrice = 5;
+
+   SyneroexOrderState orderState = 6;
+}
+
+
+message OrderResponse {
+   string order_id = 1;
+   string client_order_id = 2;
+
+   ExecType execType = 3;
+   DecimalValue cumQuantity = 4;
+   DecimalValue avgPrice = 5;
+
+   SyneroexOrderState orderState = 6;
+   string reason = 7;
+   uint64 transactTime = 8;
+   string broker = 9;
+}
+
+
+message SubscriptionRequest {
+   string name = 1;
+}
+
+message NullResponse {
+}
+
+message PingRequest {
+}
+
+
+service AuthenticationService {
+   rpc Authenticate(AuthenticationRequest) returns (stream AuthenticationResponse);
+}
+
+service OrderService {
+   rpc Submit (CreateOrdersRequest) returns (stream CreateOrdersResponse);
+
+   rpc Replace (ReplaceOrdersRequest) returns (stream ReplaceOrdersResponse);
+
+   rpc Cancel (CancelOrdersRequest) returns (stream CancelOrdersResponse);
+
+
+   rpc Subscribe (SubscriptionRequest) returns (stream OrderResponse);
+
+   rpc Unsubscribe (SubscriptionRequest) returns (stream NullResponse);
+
+
+   rpc QueryOrder (OrderQueryRequest) returns (stream OrderQueryResponse);
+
+
+   rpc Ping (PingRequest) returns (stream NullResponse);
+
+}
+
+

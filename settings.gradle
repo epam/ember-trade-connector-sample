@@ -2,6 +2,7 @@
 include ':common',
         ':devenv',
         ':gemini',
+        ':grpc:syneroex',
         ':fix:core',
         ':fix:deltix'
 
