@@ -11,7 +11,7 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
-- Download and install [Eclipse Temurin JDK 11](https://adoptium.net/temurin/releases?version=11)
+- Download and install [Eclipse Temurin JDK 17](https://adoptium.net/temurin/releases?version=17)
 - Download and install [QuantServer 5.6 (TimeBase and Aggregator)](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.23.jar)
 
 
@@ -34,8 +34,8 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   # path to TimeBase installation
   devenvDeltixHome=C:/Deltix/QuantServer
   
-  # path to Java 11 JDK
-  devenvJavaHome=C:/Program Files/Eclipse Temurin/jdk-11.0.15.10-hotspot
+  # path to Java 17 JDK
+  devenvJavaHome=C:/Program Files/Eclipse Temurin/jdk-17.0.12.2-hotspot
   ```
 - Execute Gradle task to create dev env:
   ```shell
