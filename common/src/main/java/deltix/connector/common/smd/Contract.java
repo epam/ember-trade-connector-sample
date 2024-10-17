@@ -4,6 +4,8 @@ import com.epam.deltix.dfp.Decimal;
 import com.epam.deltix.dfp.Decimal64Utils;
 import deltix.anvil.util.annotation.Alphanumeric;
 import deltix.ember.message.smd.InstrumentType;
+import deltix.ember.message.smd.SyntheticLeg;
+import deltix.util.collections.generated.ObjectList;
 
 public class Contract {
 
@@ -18,11 +20,13 @@ public class Contract {
     protected final long quantityPrecision;
 
     protected final @Alphanumeric long currency;
+    protected final ObjectList<SyntheticLeg> legs;
 
     public Contract(String symbol, String brokerSymbol, InstrumentType securityType,
                     @Decimal long priceMultiplier, @Decimal long pricePrecision,
                     @Decimal long quantityMultiplier, @Decimal long quantityPrecision,
-                    @Alphanumeric long currency) {
+                    @Alphanumeric long currency,
+                    ObjectList<SyntheticLeg> legs) {
         this.symbol = symbol;
         this.brokerSymbol = brokerSymbol;
         this.securityType = securityType;
@@ -34,6 +38,7 @@ public class Contract {
         this.quantityPrecision = quantityPrecision;
 
         this.currency = currency;
+        this.legs = legs;
     }
 
     public String getSymbol() {
@@ -89,4 +94,7 @@ public class Contract {
         return currency;
     }
 
+    public ObjectList<SyntheticLeg> getLegs() {
+        return legs;
+    }
 }

@@ -17,6 +17,7 @@ import deltix.ember.connector.grpc.syneroex.session.Session;
 import deltix.ember.connector.grpc.syneroex.session.SessionContext;
 import deltix.ember.connector.grpc.syneroex.session.SyneroexListener;
 import deltix.ember.connector.grpc.syneroex.util.SyneroexMessage;
+import deltix.ember.message.smd.InstrumentType;
 import deltix.ember.message.trade.*;
 import deltix.ember.service.connector.TradeConnectorContext;
 import deltix.ember.util.CustomAttributeListBuilder;
@@ -212,6 +213,13 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
                 makeOrderEvent(response, tradeReportEvent);
                 // here we are assuming that server reports "total" fill - i.e. only CumQty and AvgPrice
                 // therefore no need to populate TradeQuantity, TradePrice and EventId (for individual fills)
+
+                // example how retrieve Contract for inbound message symbol
+                final Contract contract = getContractByBrokerSymbol(response.getSymbol());
+                if (contract.getSecurityType() == InstrumentType.SYNTHETIC) {
+                    tradeReportEvent.setMultiLegReportingType(MultiLegReportingType.MULTI_LEG_SECURITY);
+                }
+
                 fireOrderTradeReportEvent(tradeReportEvent);
                 break;
         }

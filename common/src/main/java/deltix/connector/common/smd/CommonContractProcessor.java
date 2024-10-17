@@ -5,6 +5,9 @@ import deltix.anvil.util.CharSequenceUtil;
 import deltix.anvil.util.annotation.Alphanumeric;
 import deltix.ember.message.smd.InstrumentAttribute;
 import deltix.ember.message.smd.InstrumentUpdate;
+import deltix.ember.message.smd.SyntheticLeg;
+import deltix.ember.message.smd.SyntheticUpdate;
+import deltix.util.collections.CollectionUtil;
 import deltix.util.collections.generated.ObjectList;
 
 
@@ -74,7 +77,14 @@ public class CommonContractProcessor extends BaseContractProcessor<Contract> {
             }
         }
 
-        return new Contract(symbol, brokerSymbol, update.getInstrumentType(), priceMultiplier, pricePrecision, quantityMultiplier, quantityPrecision, currency);
+        ObjectList<SyntheticLeg> legs = null;
+        if (update instanceof SyntheticUpdate) {
+            legs = CollectionUtil.copy(((SyntheticUpdate) update).getLegs(), SyntheticLeg::copy);
+        }
+
+        return new Contract(symbol, brokerSymbol, update.getInstrumentType(),
+                            priceMultiplier, pricePrecision, quantityMultiplier, quantityPrecision,
+                            currency, legs);
     }
 
 }
