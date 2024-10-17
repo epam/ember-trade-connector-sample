@@ -118,17 +118,18 @@ message OrderQueryResponse {
 
 
 message OrderResponse {
-   string order_id = 1;
-   string client_order_id = 2;
+   string symbol = 1;
+   string order_id = 2;
+   string client_order_id = 3;
 
-   ExecType execType = 3;
-   DecimalValue cumQuantity = 4;
-   DecimalValue avgPrice = 5;
+   ExecType execType = 4;
+   DecimalValue cumQuantity = 5;
+   DecimalValue avgPrice = 6;
 
-   SyneroexOrderState orderState = 6;
-   string reason = 7;
-   uint64 transactTime = 8;
-   string broker = 9;
+   SyneroexOrderState orderState = 7;
+   string reason = 8;
+   uint64 transactTime = 9;
+   string broker = 10;
 }
 
 
