@@ -26,7 +26,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   NEXUS_PASS=password
   
   # TimeBase serial number
-  serialNumber=XXXX-17A45F8CBF0-XXXX
+  serialNumber=XXXX-XXXXXXXXXX-XXXX
   
   # path to dev environment 
   devenvDir=D:/Projects/Deltix
