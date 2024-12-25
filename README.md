@@ -28,7 +28,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   NEXUS_PASS=password
   
   # TimeBase serial number
-  serialNumber=XXXX-17A45F8CBF0-XXXX
+  serialNumber=XXXX-ABCDFF8CBF0-XXXX
   
   # path to dev environment 
   devenvDir=D:/Projects/Deltix
@@ -41,7 +41,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   ```
 - Execute Gradle task to create dev env:
   ```shell
-  gradlew clean build gatherJars buildDevEnv
+  gradlew clean build buildDevEnv
   ```
 
 ### Configuration
