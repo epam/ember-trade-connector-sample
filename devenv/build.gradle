@@ -29,8 +29,16 @@ tasks.register('devenvClean', Delete) {
 
 tasks.register('devenvCopy', Copy) {
     dependsOn devenvClean
-    from("$devenvRootDir/homes") {
-        filter(ReplaceTokens, tokens: devenvProperties)
+    from ("$devenvRootDir/homes") {
+        exclude '**/*.sh'
+        exclude '/qshome/services/TimeBase/TimeBase'
+        filter (ReplaceTokens, tokens: devenvProperties)
+    }
+    from ("$devenvRootDir/homes") {
+        include '**/*.sh'
+        include '/qshome5X/services/TimeBase/TimeBase'
+        filter (ReplaceTokens, tokens: devenvProperties)
+        fileMode 0775
     }
     into devenvOutput
 }
