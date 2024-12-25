@@ -2,10 +2,10 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'de.undercouch.download'
 
-def DELTIX_PROXY_REPOSITIRY = findProp('NEXUS_PROXY_REPOSITIRY', 'https://nexus.deltixhub.com/repository/')
+def DELTIX_PROXY_REPOSITORY = findProp('NEXUS_PROXY_REPOSITORY', 'https://nexus.deltixhub.com/repository/')
 
 File devenvRootDir = new File(sourceSets.main.resources.srcDirs[0], 'devenv')
-File connectorsArchiveDir = new File(rootProject.buildDir, 'archives')
+File connectorsArchiveDir = rootProject.file('build/archives')
 File devenvOutput = file(findProperty('devenvDir') ?: rootProject.file('build/devenv'))
 File connectorsLibDir = new File(devenvOutput, 'ember/lib/custom')
 
@@ -19,7 +19,7 @@ def devenvProperties = loadDevEnvProperties(devenvRootDir, devenvOutput)
 
 // region Dev Env Tasks
 
-task devenvClean(type: Delete) {
+tasks.register('devenvClean', Delete) {
     setDelete devenvOutput
 
     doLast {
@@ -27,32 +27,36 @@ task devenvClean(type: Delete) {
     }
 }
 
-task devenvCopy(type: Copy, dependsOn: devenvClean) {
-    from ("$devenvRootDir/homes") {
-        filter (ReplaceTokens, tokens: devenvProperties)
+tasks.register('devenvCopy', Copy) {
+    dependsOn devenvClean
+    from("$devenvRootDir/homes") {
+        filter(ReplaceTokens, tokens: devenvProperties)
     }
     into devenvOutput
 }
 
-task downloadEmberZip(type: Download, dependsOn: devenvCopy) {
-    src "${DELTIX_PROXY_REPOSITIRY}epm-rtc-public/QuantServer/Trade/Ember/${emberVersion}/deltix-ember-${emberVersion}.zip"
+tasks.register('downloadEmberZip', Download) {
+    dependsOn devenvCopy
+    src "${DELTIX_PROXY_REPOSITORY}epm-rtc-public/QuantServer/Trade/Ember/${emberVersion}/deltix-ember-${emberVersion}.zip"
     dest new File(buildDir, "deltix-ember-${emberVersion}.zip")
     username findProp('NEXUS_USER', null) as String
     password findProp('NEXUS_PASS', null) as String
 }
 
-task unzipEmberZip(type: Copy, dependsOn: downloadEmberZip) {
+tasks.register('unzipEmberZip', Copy) {
+    dependsOn downloadEmberZip
     from zipTree(downloadEmberZip.dest)
     into new File(devenvOutput, 'ember')
 }
 
-task devenvPrepare(type: Copy, dependsOn: unzipEmberZip) {
+tasks.register('devenvPrepare', Copy) {
+    dependsOn unzipEmberZip
     from zipTree("$devenvRootDir/archives/securities.zip")
     into new File(devenvOutput, '/qshome/tickdb')
 }
 
 
-task devenvCleanLibCustom(type: Delete) {
+tasks.register('devenvCleanLibCustom', Delete) {
     setDelete connectorsLibDir
 
     doLast {
@@ -60,7 +64,14 @@ task devenvCleanLibCustom(type: Delete) {
     }
 }
 
-task updateConnectors(type: Copy, dependsOn: devenvCleanLibCustom) {
+tasks.register('gatherJars', Copy) {
+    from rootProject.subprojects.collect { it.tasks.withType(Jar) }
+    into archivesDirectory
+}
+
+tasks.register('updateConnectors', Copy) {
+    dependsOn devenvCleanLibCustom
+    dependsOn gatherJars
     from "$devenvRootDir/devenv.properties"
     from connectorsArchiveDir
     into connectorsLibDir
@@ -68,7 +79,7 @@ task updateConnectors(type: Copy, dependsOn: devenvCleanLibCustom) {
 
 // endregion
 
-task buildDevEnv {
+tasks.register('buildDevEnv') {
     dependsOn devenvPrepare, updateConnectors
 }
 

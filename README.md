@@ -9,10 +9,12 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 
 ## Prerequisite
 
+- Download and install [Eclipse Temurin JDK 17](https://adoptium.net/temurin/releases?version=17)
+
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
-- Download and install [Eclipse Temurin JDK 17](https://adoptium.net/temurin/releases?version=17)
-- Download and install [QuantServer 5.6 (TimeBase and Aggregator)](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.23.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.119.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/Mac](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.119.jar)
 
 
 ## Development Environment
@@ -79,7 +81,7 @@ You can setup breakpoints in your connector and launch EmperApp under debugger.
 ## Deltix FIX 4.4 Trade Connector
 
 Deltix FIX connector sample demonstrates how build trade connector for FIX protocol-based API. \
-In particular this connector allows to connect to [Ember FIX Gateway](https://ember.deltixlab.com/docs/config/config_reference/?_highlight=fix&_highlight=gatew#fix-api-gateway).
+In particular this connector allows to connect to [Ember FIX Gateway](https://ember.deltixlab.com/docs/config/config_reference/#fix-api-gateway).
 See [Deltix FIX API](https://ember.deltixlab.com/docs/api/fix/fix_api_roe/).
 
 ### Sources

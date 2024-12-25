@@ -70,8 +70,3 @@ allprojects {
         }
 	}
 }
-
-tasks.register('gatherJars', Copy) {
-    from subprojects.collect { it.tasks.withType(Jar) }
-    into archivesDirectory
-}

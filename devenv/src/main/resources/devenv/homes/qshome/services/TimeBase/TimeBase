@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export DELTIX_HOME="@devenvDeltixHome@"
+
+export PATH="$DELTIX_HOME/bin:$DELTIX_HOME/build/dotnet:$PATH"
+
+export JAVA_OPTS="-verbose:gc -XX:+HeapDumpOnOutOfMemoryError -Xmx@devenvTimeBaseMx@ -Xms@devenvTimeBaseMs@"
+
+export TIMEBASE_SERIAL=@serialNumber@
+
+"$DELTIX_HOME/bin/tdbserver.sh" -home "@devenvQsHome@"
