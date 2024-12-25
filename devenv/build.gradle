@@ -36,7 +36,7 @@ tasks.register('devenvCopy', Copy) {
     }
     from ("$devenvRootDir/homes") {
         include '**/*.sh'
-        include '/qshome5X/services/TimeBase/TimeBase'
+        include '/qshome/services/TimeBase/TimeBase'
         filter (ReplaceTokens, tokens: devenvProperties)
         fileMode 0775
     }
