@@ -9,12 +9,13 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 
 ## Prerequisite
 
+- Git on MacOS/Linux - Install [Git LFS](https://github.com/git-lfs/git-lfs?tab=readme-ov-file#installing) _before cloning_
 - Download and install [Eclipse Temurin JDK 17](https://adoptium.net/temurin/releases?version=17)
 
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
 - [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.119.jar)
-- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/Mac](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.119.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/MacOS](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.119.jar)
 
 
 ## Development Environment
