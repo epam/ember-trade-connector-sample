@@ -20,6 +20,7 @@ import deltix.ember.connector.grpc.syneroex.util.SyneroexMessage;
 import deltix.ember.message.smd.InstrumentType;
 import deltix.ember.message.trade.*;
 import deltix.ember.service.connector.TradeConnectorContext;
+import deltix.ember.service.latstat.LatencyTracer;
 import deltix.ember.util.CustomAttributeListBuilder;
 import deltix.util.collections.generated.ObjectList;
 import edu.umd.cs.findbugs.annotations.DefaultAnnotationForParameters;
@@ -47,6 +48,7 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
     private final SyneroexContext context;
     private final Log logger;
     private final Session session;
+    private final LatencyTracer latencyTracer;
 
     private final CustomAttributeListBuilder attributeBuilder = new CustomAttributeListBuilder(2);
 
@@ -59,6 +61,7 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
         this.logger = sessionContext.logger();
         this.session = new Session(sessionContext, new InnerSyneroexListener());
         this.context = context;
+        this.latencyTracer = connectorContext.getLatencyTracer();
     }
 
     @Override
@@ -96,6 +99,9 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
             }
         }
 
+        if (latencyTracer != null) {
+            latencyTracer.addRecord(request, clock.timeNs());
+        }
         session.createOrder(newOrder.build());
     }
 
@@ -106,6 +112,9 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
         cancelOrder.setClientOrderId(getClientOrderId(request));
         cancelOrder.setOrderId(CharSequenceUtil.toString(request.getExternalOrderId()));
 
+        if (latencyTracer != null) {
+            latencyTracer.addRecord(request, clock.timeNs());
+        }
         session.cancelOrder(cancelOrder.build());
     }
 
@@ -122,6 +131,9 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
             replaceOrder.setPrice(SyneroexUtil.toDecimalValue(request.getLimitPrice()));
         }
 
+        if (latencyTracer != null) {
+            latencyTracer.addRecord(request, clock.timeNs());
+        }
         session.replaceOrder(replaceOrder.build());
     }
 
@@ -277,6 +289,10 @@ public class SyneroexTradeConnector extends BaseTradeConnector<Contract> impleme
     public int doLast(int workDone) {
         session.keepSessionAlive(keepSessionAlive);
         workDone += session.work();
+
+        if (workDone == 0 && latencyTracer != null) {
+            latencyTracer.doWork(clock.timeNs());
+        }
         return workDone;
     }
 
