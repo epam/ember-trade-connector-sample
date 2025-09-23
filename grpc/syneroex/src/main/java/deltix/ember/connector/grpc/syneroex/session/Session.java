@@ -608,6 +608,10 @@ public class Session implements Disposable {
         if (log.isTraceEnabled()) {
             log.trace("(%s) Class: %s\n%s").with(inbound ? "INB" : "OUT").with(message.getClass().getSimpleName()).with(SyneroexUtil.messageToString(message));
         }
+
+        // log message to file
+        final int length = formatter.format(inbound, message);
+        messageLog.log(inbound, clock.timeNs(), formatter.buffer(), 0, length);
     }
 
     // endregion
