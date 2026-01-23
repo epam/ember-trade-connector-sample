@@ -10,12 +10,12 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 ## Prerequisite
 
 - Git on MacOS/Linux - Install [Git LFS](https://github.com/git-lfs/git-lfs?tab=readme-ov-file#installing) _before cloning_
-- Download and install [Eclipse Temurin JDK 17](https://adoptium.net/temurin/releases?version=17)
+- Download and install [Amazon Corretto JDK 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
 
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
-- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.119.jar)
-- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/MacOS](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.119.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.177.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/MacOS](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.177.jar)
 
 
 ## Development Environment
@@ -38,7 +38,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   devenvDeltixHome=C:/Deltix/QuantServer
   
   # path to Java 17 JDK
-  devenvJavaHome=C:/Program Files/Eclipse Temurin/jdk-17.0.12.2-hotspot
+  devenvJavaHome=set JAVA_HOME=C:/Program Files/Amazon Corretto/jdk17.0.13_11
   ```
 - Execute Gradle task to create dev env:
   ```shell
