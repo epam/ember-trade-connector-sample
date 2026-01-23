@@ -38,7 +38,7 @@ You need local installation of [Deltix QuantServer](https://kb.timebase.info/doc
   devenvDeltixHome=C:/Deltix/QuantServer
   
   # path to Java 17 JDK
-  devenvJavaHome=set JAVA_HOME=C:/Program Files/Amazon Corretto/jdk17.0.13_11
+  devenvJavaHome=C:/Program Files/Amazon Corretto/jdk17.0.13_11
   ```
 - Execute Gradle task to create dev env:
   ```shell
