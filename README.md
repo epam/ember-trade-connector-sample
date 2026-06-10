@@ -4,7 +4,7 @@ This project illustrates how to build, test, debug, and deploy trading connector
 Execution Server is a container of trading algorithms that interface with market using market data and trading connectors.
 
 Each Trading Connector adapts API of specific execution venue to normalized Deltix data model. \
-For more information see [Trade Connector Developer's Guide](https://ember.deltixlab.com/docs/tc/tc_dev_guide/) and [Trading Data Model](https://ember.deltixlab.com/docs/data_model/trading/).
+For more information see [Trade Connector Developer's Guide](https://connectors.deltixlab.com/docs/order-entry/tc_dev_guide/) and [Trading Data Model](https://ember.deltixlab.com/docs/data_model/trading/).
 
 
 ## Prerequisite
@@ -14,8 +14,8 @@ For more information see [Trade Connector Developer's Guide](https://ember.delti
 
 You need local installation of [Deltix QuantServer](https://kb.timebase.info/docs/deployment/installer-ee). 
 
-- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.177.jar)
-- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/MacOS](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.177.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Windows](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-windows-installer-online-5.6.201.jar)
+- [QuantServer 5.6 (TimeBase and Aggregator) Installer - Linux/MacOS](https://deltix-installers.s3.eu-west-3.amazonaws.com/5.6/deltix-linux-installer-online-5.6.201.jar)
 
 
 ## Development Environment
@@ -72,7 +72,7 @@ gradlew clean build updateConnectors
 
 ## Debug
 
-One simple way to debug your connector is running entire [Execution Server under debugger](https://ember.deltixlab.com/docs/tc/tc_dev_guide/#appendix-a-debugging-trade-connector).
+One simple way to debug your connector is running entire [Execution Server under debugger](https://connectors.deltixlab.com/docs/order-entry/tc_dev_guide/#appendix-a-debugging-trade-connector).
 
 Create Run configuration inside IntelliJ/IDEA. It uses `deltix.ember.app.EmberApp` as a main class and `ember.home`
 system property that point to ember configuration home. \
